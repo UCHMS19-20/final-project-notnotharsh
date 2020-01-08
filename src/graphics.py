@@ -5,53 +5,83 @@ def point_transform(point):
     x_dist = point[0] - coords[0]
     y_dist = point[1] - coords[1]
     z_dist = point[2] - coords[2]
-    not_new_z = z_dist * math.cos(angles[0] + y_dist * math.sin(angles[0]))
-    new_x = x_dist * math.cos(angles[1]) + not_new_z * math.sin(angles[1])
-    new_y = y_dist * math.cos(angles[0]) - z_dist * math.sin(angles[0])
-    new_z = not_new_z * math.cos(angles[1]) - x_dist * math.sin(angles[1])
-    x_denom = math.sqrt(math.pow(new_x, 2) + math.pow(new_z, 2))
-    y_denom = math.sqrt(math.pow(new_y, 2) + math.pow(new_z, 2))
-    x_angle = math.asin(new_x / x_denom)
-    y_angle = math.asin(new_y / y_denom)
-    if (new_z <= 0):
-        if (new_x > 0):
-            x_angle = math.pi - x_angle
-        if (new_x < 0):
-            x_angle = -1 * math.pi - x_angle
-        if (new_y > 0):
-            y_angle = math.pi - y_angle
-        if (new_y < 0):
-            y_angle = -1 * math.pi - y_angle
-    display_angles = [(size[0] / 2) * (1 + x_angle * 2), (size[0] / 2) * (1 + y_angle * 2)]
+    rho = math.sqrt(math.pow(x_dist, 2) + math.pow(y_dist, 2) + math.pow(z_dist, 2))
+    old_theta = math.atan2(y_dist, x_dist)
+    old_phi = math.atan2(math.sqrt(math.pow(x_dist, 2) + math.pow(y_dist, 2)), z_dist)
+    new_theta = old_theta + math.pi / 2 - angles[0]
+    new_phi = old_phi + math.pi / 2 - angles[1]
+    x_angle = 1 / (math.tan(new_theta))
+    y_angle = 1 / (math.tan(new_phi) * math.sin(new_theta))
+    # print(round(new_theta, 3), round(new_phi, 3), round(new_x, 3), round(new_y, 3), round(new_z, 3), round(x_angle, 3), round(y_angle, 3))
+    x_display = (size[0] / 2) * (x_angle * 2)
+    y_display = (size[1] / 2) * (y_angle * -2)
+    display_angles = [size[0] / 2 + x_display, size[1] / 2 + y_display]
     return display_angles
 
-coords = [0, 0, 0.01]
-angles = [0, 0]
-size = [600, 600]
+coords = [0, -.001, 0]
+angles = [math.pi / 2, math.pi / 2]
+size = [1000, 1000]
 
 pygame.init()
 screen = pygame.display.set_mode((size[0], size[1]))
 
 while True:
-    screen.fill([0, 0, 0])
-    for i in range(-5, 5):
-        for j in range(-5, 5):
-            for k in range(10, 20):
+    # print(str(round(angles[0], 3)) + " " + str(round(angles[1], 3)) + " " + str(round(coords[0], 3)) + " " + str(round(coords[1], 3)) + " " + str(round(coords[2], 3)))
+    screen.fill([0, -.001, 0])
+    for i in range(-5, 6):
+        for j in range(10, 21):
+            for k in range(-5, 6):
                 point = [i, j, k]
                 display_coords = point_transform(point)
-                screen.set_at((int(display_coords[0]), int(display_coords[1])), [255, 255, 255])
+                pygame.draw.circle(screen, [255, 255, 255], (int(display_coords[0]), int(display_coords[1])), 4)
     keystate = pygame.key.get_pressed()
-    if keystate[pygame.K_d]:
-        coords[0] += .1
-    if keystate[pygame.K_a]:
-        coords[0] -= .1
-    if keystate[pygame.K_w]:
-        coords[1] -= .1
-    if keystate[pygame.K_s]:
-        coords[1] += .1
     if keystate[pygame.K_z]:
-        coords[2] += .1
+        coords[0] += .05 * math.sin(angles[1]) * math.cos(angles[0])
+        coords[1] += .05 * math.sin(angles[1]) * math.sin(angles[0])
+        coords[2] += .05 * math.cos(angles[1])
     if keystate[pygame.K_x]:
-        coords[2] -= .1
-    pygame.event.pump()
+        coords[0] -= .05 * math.sin(angles[1]) * math.cos(angles[0])
+        coords[1] -= .05 * math.sin(angles[1]) * math.sin(angles[0])
+        coords[2] -= .05 * math.cos(angles[1])
+    if keystate[pygame.K_a]:
+        coords[0] -= .05 * math.sin(angles[1]) * math.sin(angles[0])
+        coords[1] -= .05 * math.sin(angles[1]) * math.cos(angles[0]) * -1
+        coords[2] -= .05 * math.cos(angles[1])
+    if keystate[pygame.K_d]:
+        coords[0] += .05 * math.sin(angles[1]) * math.sin(angles[0])
+        coords[1] += .05 * math.sin(angles[1]) * math.cos(angles[0]) * -1
+        coords[2] += .05 * math.cos(angles[1])
+    if keystate[pygame.K_w]:
+        coords[0] += .05 * math.cos(angles[1]) * math.cos(angles[0]) * -1
+        coords[1] += .05 * math.cos(angles[1]) * math.sin(angles[0]) * -1
+        coords[2] += .05 * math.sin(angles[1])
+    if keystate[pygame.K_s]:
+        coords[0] -= .05 * math.cos(angles[1]) * math.cos(angles[0]) * -1
+        coords[1] -= .05 * math.cos(angles[1]) * math.sin(angles[0]) * -1
+        coords[2] -= .05 * math.sin(angles[1])
+    if keystate[pygame.K_v]:
+        coords[1] += .05
+    if keystate[pygame.K_b]:
+        coords[1] -= .05
+    if keystate[pygame.K_f]:
+        coords[0] -= .05
+    if keystate[pygame.K_h]:
+        coords[0] += .05
+    if keystate[pygame.K_t]:
+        coords[2] += .05
+    if keystate[pygame.K_g]:
+        coords[2] -= .05
+    if keystate[pygame.K_i]:
+        if angles[1] > 0 and angles[1] < math.pi:
+            angles[1] -= .003
+    if keystate[pygame.K_k]:
+        if angles[1] > 0 and angles[1] < math.pi:
+            angles[1] += .003
+    if keystate[pygame.K_j]:
+        angles[0] += .003
+    if keystate[pygame.K_l]:
+        angles[0] -= .003
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
     pygame.display.flip()
