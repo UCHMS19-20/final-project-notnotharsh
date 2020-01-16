@@ -48,47 +48,65 @@ def draw_line(p1, p2, draw_points, color):
         pygame.draw.line(bottom_screen, color, (int(coords_set_1[2][0]), int(coords_set_1[2][1])), (int(coords_set_2[2][0]), int(coords_set_2[2][1])), 4)
     return [coords_set_1, coords_set_2]
 
-def get_dist_squared(surface):
-    global coords
-    center_x = (min(surface[0][0], surface[0][1], surface[0][1]) + max(surface[0][0], surface[0][1], surface[0][2])) / 2
-    center_y = (min(surface[1][0], surface[1][1], surface[1][1]) + max(surface[1][0], surface[1][1], surface[1][2])) / 2
-    center_z = (min(surface[2][0], surface[2][1], surface[2][1]) + max(surface[2][0], surface[2][1], surface[2][2])) / 2
-    return math.sqrt(math.pow(center_x - coords[0], 2) + math.pow(center_y - coords[1], 2) + math.pow(center_z - coords[2], 2))
+def get_dist_squared(surface, pos):
+    center_x = (min(surface[0][0], surface[1][0], surface[2][0], surface[3][0]) + max(surface[0][0], surface[1][0], surface[2][0], surface[3][0])) / 2
+    center_y = (min(surface[0][1], surface[1][1], surface[2][1], surface[3][1]) + max(surface[0][1], surface[1][1], surface[2][1], surface[3][1])) / 2
+    center_z = (min(surface[0][2], surface[1][2], surface[2][2], surface[3][2]) + max(surface[0][2], surface[1][2], surface[2][2], surface[3][2])) / 2
+    return (math.pow(center_x - pos[0], 2) + math.pow(center_y - pos[1], 2) + math.pow(center_z - pos[2], 2))
 
-def return_color(dist_squared):
-    return (min(200, 1000 / get_dist_squared(i)), min(200, 1000 / get_dist_squared(i)), min(200, 1000 / get_dist_squared(i)))
+def return_color(dist_squared, from_outside):
+    return (min(150, 300 / dist_squared) + 10000 / from_outside, min(150, 300 / dist_squared) + 10000 / from_outside, min(100, 300 / dist_squared) + 10000 / from_outside)
 
 def draw_surface(plist, draw_points, draw_lines, color):
     global top_screen, mid_screen, bottom_screen
     coords_set_1 = draw_point(plist[0], draw_points, color)
     coords_set_2 = draw_point(plist[1], draw_points, color)
     coords_set_3 = draw_point(plist[2], draw_points, color)
-    top_forward = (coords_set_1[0][2] or coords_set_2[0][2]) or coords_set_3[0][2]
-    mid_forward = (coords_set_1[1][2] or coords_set_2[1][2]) or coords_set_3[1][2]
-    bottom_forward = (coords_set_1[2][2] or coords_set_2[2][2]) or coords_set_3[2][2]
+    coords_set_4 = draw_point(plist[3], draw_points, color)
+    top_forward = (coords_set_1[0][2] or coords_set_2[0][2]) or (coords_set_3[0][2] or coords_set_4[0][2])
+    mid_forward = (coords_set_1[1][2] or coords_set_2[1][2]) or (coords_set_3[1][2] or coords_set_4[1][2])
+    bottom_forward = (coords_set_1[2][2] or coords_set_2[2][2]) or (coords_set_3[2][2] or coords_set_4[2][2])
     if draw_lines:
-        draw_line(p1, p2, False, False, color)
-        draw_line(p1, p3, False, False, color)
-        draw_line(p2, p3, False, False, color)
+        draw_line(plist[0], plist[1], draw_points, color)
+        draw_line(plist[1], plist[2], draw_points, color)
+        draw_line(plist[2], plist[3], draw_points, color)
+        draw_line(plist[3], plist[0], draw_points, color)
     if top_forward:
-        pygame.draw.polygon(top_screen, color, [(int(coords_set_1[0][0]), int(coords_set_1[0][1])), (int(coords_set_2[0][0]), int(coords_set_2[0][1])), (int(coords_set_3[0][0]), int(coords_set_3[0][1]))])
+        pygame.draw.polygon(top_screen, color, [(int(coords_set_1[0][0]), int(coords_set_1[0][1])), (int(coords_set_2[0][0]), int(coords_set_2[0][1])), (int(coords_set_3[0][0]), int(coords_set_3[0][1])), (int(coords_set_4[0][0]), int(coords_set_4[0][1]))])
     if mid_forward:
-        pygame.draw.polygon(mid_screen, color, [(int(coords_set_1[1][0]), int(coords_set_1[1][1])), (int(coords_set_2[1][0]), int(coords_set_2[1][1])), (int(coords_set_3[1][0]), int(coords_set_3[1][1]))])
+        pygame.draw.polygon(mid_screen, color, [(int(coords_set_1[1][0]), int(coords_set_1[1][1])), (int(coords_set_2[1][0]), int(coords_set_2[1][1])), (int(coords_set_3[1][0]), int(coords_set_3[1][1])), (int(coords_set_4[1][0]), int(coords_set_4[1][1]))])
     if bottom_forward:
-        pygame.draw.polygon(bottom_screen, color, [(int(coords_set_1[2][0]), int(coords_set_1[2][1])), (int(coords_set_2[2][0]), int(coords_set_2[2][1])), (int(coords_set_3[2][0]), int(coords_set_3[2][1]))])
+        pygame.draw.polygon(bottom_screen, color, [(int(coords_set_1[2][0]), int(coords_set_1[2][1])), (int(coords_set_2[2][0]), int(coords_set_2[2][1])), (int(coords_set_3[2][0]), int(coords_set_3[2][1])), (int(coords_set_4[2][0]), int(coords_set_4[2][1]))])
 
-side_size = (300, 300)
-mid_size = (400, 400)
+def add_cube(corner):
+    global surfaces
+    x = corner[0]
+    y = corner[1]
+    z = corner[2]
+    surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y + 2, z], [x, y + 2, z]])
+    surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y, z + 2], [x, y, z + 2]])
+    surfaces.append([[x, y, z], [x, y + 2, z], [x, y + 2, z + 2], [x, y, z + 2]])
+    surfaces.append([[x, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x, y + 2, z + 2]])
+    surfaces.append([[x, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x, y + 2, z + 2]])
+    surfaces.append([[x + 2, y, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x + 2, y, z + 2]])
 
-coords = [0, 0, 0]
+def free(pos):
+    global cubes
+    local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2))]
+    return local_cube not in cubes
+
+side_size = (400, 300)
+mid_size = (600, 600)
+
+coords = [-1, -2, 1]
 theta = math.pi / 2
 y_val = 1
 
-surfaces = [
-    [[0, -5, 0], [1, -5, 0], [1, -3, 1]],
-    [[0, 0, 1], [4, 0, 0], [-2, -2, -2]],
-    [[0, 10, 0], [0, 10, 1], [1, 10, 0]]
-]
+trans_speed = .1
+rot_speed = math.pi / 50
+
+cubes = []
+surfaces = []
 
 pygame.init()
 total_screen = pygame.display.set_mode((side_size[0] + mid_size[0], 2 * side_size[1]))
@@ -96,36 +114,51 @@ top_screen = pygame.Surface(side_size)
 mid_screen = pygame.Surface(mid_size)
 bottom_screen = pygame.Surface(side_size)
 
+f = open("cubes.txt", "r")
+cube_strings = f.readlines()
+for i in cube_strings:
+    text = i.split()
+    cubes.append([int(text[0]), int(text[1]), int(text[2])])
+
+for i in cubes:
+    add_cube(i)
+
 while True:
     # print(round(coords[0], 3), round(coords[1], 3), round(coords[2], 3), round(theta, 3))
     total_screen.fill([0, 0, 0])
     top_screen.fill([0, 0, 0])
     mid_screen.fill([0, 0, 0])
     bottom_screen.fill([0, 0, 0])
-    surfaces.sort(key = lambda surface: get_dist_squared(surface), reverse = True)
+    surfaces.sort(key = lambda surface: get_dist_squared(surface, coords), reverse = True)
     for i in surfaces:
-        draw_surface(i, False, False, return_color(get_dist_squared(i)))
+        draw_surface(i, False, False, return_color(get_dist_squared(i, coords), get_dist_squared(i, [0, -10, 0])))
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_z]:
-        coords[0] += .03 * math.cos(theta)
-        coords[1] += .03 * math.sin(theta)
+        if free([coords[0] + 3 * trans_speed * math.cos(theta), coords[1] + 3 * trans_speed * math.sin(theta), coords[2]]):
+            coords[0] += trans_speed * math.cos(theta)
+            coords[1] += trans_speed * math.sin(theta)
     if keystate[pygame.K_x]:
-        coords[0] -= .03 * math.cos(theta)
-        coords[1] -= .03 * math.sin(theta)
+        if free([coords[0] - 3 * trans_speed * math.cos(theta), coords[1] - 3 * trans_speed * math.sin(theta), coords[2]]):
+            coords[0] -= trans_speed * math.cos(theta)
+            coords[1] -= trans_speed * math.sin(theta)
     if keystate[pygame.K_a]:
-        coords[0] -= .03 * math.sin(theta)
-        coords[1] += .03 * math.cos(theta)
+        if free([coords[0] - 3 * trans_speed * math.sin(theta), coords[1] + 3 * trans_speed * math.cos(theta), coords[2]]):
+            coords[0] -= trans_speed * math.sin(theta)
+            coords[1] += trans_speed * math.cos(theta)
     if keystate[pygame.K_d]:
-        coords[0] += .03 * math.sin(theta)
-        coords[1] -= .03 * math.cos(theta)
+        if free([coords[0] + 3 * trans_speed * math.sin(theta), coords[1] - 3 * trans_speed * math.cos(theta), coords[2]]):
+            coords[0] += trans_speed * math.sin(theta)
+            coords[1] -= trans_speed * math.cos(theta)
     if keystate[pygame.K_w]:
-        coords[2] += .03
+        if free([coords[0], coords[1], coords[2] + 3 * trans_speed]):
+            coords[2] += trans_speed
     if keystate[pygame.K_s]:
-        coords[2] -= .03
-    if keystate[pygame.K_j]:
-        theta += .003
-    if keystate[pygame.K_l]:
-        theta -= .003
+        if free([coords[0], coords[1], coords[2] - 3 * trans_speed]):
+            coords[2] -= trans_speed
+    if keystate[pygame.K_LEFT]:
+        theta += rot_speed
+    if keystate[pygame.K_RIGHT]:
+        theta -= rot_speed
     total_screen.blit(top_screen, (0, 0))
     total_screen.blit(bottom_screen, (0, side_size[1]))
     total_screen.blit(mid_screen, (side_size[0], 0))
