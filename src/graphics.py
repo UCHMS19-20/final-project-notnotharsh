@@ -55,7 +55,7 @@ def get_dist_squared(surface, pos):
     return (math.pow(center_x - pos[0], 2) + math.pow(center_y - pos[1], 2) + math.pow(center_z - pos[2], 2))
 
 def return_color(dist_squared, from_outside):
-    return (min(150, 300 / dist_squared) + 10000 / from_outside, min(150, 300 / dist_squared) + 10000 / from_outside, min(100, 300 / dist_squared) + 10000 / from_outside)
+    return (min(250, 300 / dist_squared + 10000 / from_outside), min(250, 300 / dist_squared + 10000 / from_outside), min(250, 300 / dist_squared + 10000 / from_outside))
 
 def draw_surface(plist, draw_points, draw_lines, color):
     global top_screen, mid_screen, bottom_screen
@@ -83,22 +83,64 @@ def add_cube(corner):
     x = corner[0]
     y = corner[1]
     z = corner[2]
-    surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y + 2, z], [x, y + 2, z]])
-    surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y, z + 2], [x, y, z + 2]])
-    surfaces.append([[x, y, z], [x, y + 2, z], [x, y + 2, z + 2], [x, y, z + 2]])
-    surfaces.append([[x, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x, y + 2, z + 2]])
-    surfaces.append([[x, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x, y + 2, z + 2]])
-    surfaces.append([[x + 2, y, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x + 2, y, z + 2]])
+    if [[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z]] not in surfaces:
+        surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z]])
+    if [[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z]] not in surfaces:
+        surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z]])
+    if [[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z]] not in surfaces:
+        surfaces.append([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z]])
+    if [[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z]] not in surfaces:
+        surfaces.append([[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z]])
+    if [[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2]] not in surfaces:
+        surfaces.append([[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2]])
+    if [[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2]] not in surfaces:
+        surfaces.append([[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2]])
+    if [[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2]] not in surfaces:
+        surfaces.append([[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2]])
+    if [[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2]] not in surfaces:
+        surfaces.append([[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2]])
+    if [[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1]] not in surfaces:
+        surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1]])
+    if [[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1]] not in surfaces:
+        surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1]])
+    if [[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2]] not in surfaces:
+        surfaces.append([[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2]])
+    if [[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2]] not in surfaces:
+        surfaces.append([[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2]])
+    if [[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1]] not in surfaces:
+        surfaces.append([[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1]])
+    if [[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1]] not in surfaces:
+        surfaces.append([[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1]])
+    if [[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2]] not in surfaces:
+        surfaces.append([[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2]])
+    if [[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2]] not in surfaces:
+        surfaces.append([[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2]])
+    if [[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z]] not in surfaces:
+        surfaces.append([[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z]])
+    if [[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1]] not in surfaces:
+        surfaces.append([[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1]])
+    if [[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z]] not in surfaces:
+        surfaces.append([[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z]])
+    if [[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1]] not in surfaces:
+        surfaces.append([[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1]])
+    if [[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z]] not in surfaces:
+        surfaces.append([[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z]])
+    if [[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1]] not in surfaces:
+        surfaces.append([[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1]])
+    if [[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z]] not in surfaces:
+        surfaces.append([[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z]])
+    if [[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1]] not in surfaces:
+        surfaces.append([[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1]])
 
 def free(pos):
     global cubes
     local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2))]
     return local_cube not in cubes
 
-side_size = (400, 300)
-mid_size = (600, 600)
+side_size = (600, 450)
+mid_size = (900, 900)
 
-coords = [-1, -2, 1]
+coords = [0, -12, 0]
 theta = math.pi / 2
 y_val = 1
 
@@ -124,36 +166,35 @@ for i in cubes:
     add_cube(i)
 
 while True:
-    # print(round(coords[0], 3), round(coords[1], 3), round(coords[2], 3), round(theta, 3))
     total_screen.fill([0, 0, 0])
     top_screen.fill([0, 0, 0])
     mid_screen.fill([0, 0, 0])
     bottom_screen.fill([0, 0, 0])
     surfaces.sort(key = lambda surface: get_dist_squared(surface, coords), reverse = True)
     for i in surfaces:
-        draw_surface(i, False, False, return_color(get_dist_squared(i, coords), get_dist_squared(i, [0, -10, 0])))
+        draw_surface(i, False, False, return_color(get_dist_squared(i, coords), get_dist_squared(i, [0, -12, 0])))
     keystate = pygame.key.get_pressed()
     if keystate[pygame.K_z]:
-        if free([coords[0] + 3 * trans_speed * math.cos(theta), coords[1] + 3 * trans_speed * math.sin(theta), coords[2]]):
+        if free([coords[0] + 10 * trans_speed * math.cos(theta), coords[1] + 10 * trans_speed * math.sin(theta), coords[2]]):
             coords[0] += trans_speed * math.cos(theta)
             coords[1] += trans_speed * math.sin(theta)
     if keystate[pygame.K_x]:
-        if free([coords[0] - 3 * trans_speed * math.cos(theta), coords[1] - 3 * trans_speed * math.sin(theta), coords[2]]):
+        if free([coords[0] - 10 * trans_speed * math.cos(theta), coords[1] - 10 * trans_speed * math.sin(theta), coords[2]]):
             coords[0] -= trans_speed * math.cos(theta)
             coords[1] -= trans_speed * math.sin(theta)
     if keystate[pygame.K_a]:
-        if free([coords[0] - 3 * trans_speed * math.sin(theta), coords[1] + 3 * trans_speed * math.cos(theta), coords[2]]):
+        if free([coords[0] - 10 * trans_speed * math.sin(theta), coords[1] + 10 * trans_speed * math.cos(theta), coords[2]]):
             coords[0] -= trans_speed * math.sin(theta)
             coords[1] += trans_speed * math.cos(theta)
     if keystate[pygame.K_d]:
-        if free([coords[0] + 3 * trans_speed * math.sin(theta), coords[1] - 3 * trans_speed * math.cos(theta), coords[2]]):
+        if free([coords[0] + 10 * trans_speed * math.sin(theta), coords[1] - 10 * trans_speed * math.cos(theta), coords[2]]):
             coords[0] += trans_speed * math.sin(theta)
             coords[1] -= trans_speed * math.cos(theta)
     if keystate[pygame.K_w]:
-        if free([coords[0], coords[1], coords[2] + 3 * trans_speed]):
+        if free([coords[0], coords[1], coords[2] + 10 * trans_speed]):
             coords[2] += trans_speed
     if keystate[pygame.K_s]:
-        if free([coords[0], coords[1], coords[2] - 3 * trans_speed]):
+        if free([coords[0], coords[1], coords[2] - 10 * trans_speed]):
             coords[2] -= trans_speed
     if keystate[pygame.K_LEFT]:
         theta += rot_speed
