@@ -55,7 +55,7 @@ def get_dist_squared(surface, pos):
     return (math.pow(center_x - pos[0], 2) + math.pow(center_y - pos[1], 2) + math.pow(center_z - pos[2], 2))
 
 def return_color(dist_squared, from_outside):
-    return (min(250, 300 / dist_squared + 10000 / from_outside), min(250, 300 / dist_squared + 10000 / from_outside), min(250, 300 / dist_squared + 10000 / from_outside))
+    return (min(250, 300 / dist_squared + 10000 / from_outside), min(250, 300 / dist_squared + 10000 / from_outside), min(225, 250 / dist_squared + 9000 / from_outside))
 
 def draw_surface(plist, draw_points, draw_lines, color, transparent):
     global top_screen, mid_screen, bottom_screen
@@ -164,7 +164,6 @@ mid_size = (900, 900)
 
 coords = [1, -5, 1]
 theta = math.pi / 2
-y_val = 1
 
 trans_speed = .1
 rot_speed = math.pi / 50
@@ -178,6 +177,16 @@ top_screen = pygame.Surface(side_size)
 mid_screen = pygame.Surface(mid_size)
 bottom_screen = pygame.Surface(side_size)
 
+font = pygame.font.SysFont("Courier", 50)
+won_text = font.render("you won!", True, (255, 255, 255))
+lost_text = font.render("you lost!", True, (255, 255, 255))
+build_text = font.render("Build", True, (255, 255, 255))
+play_text = font.render("Play", True, (255, 255, 255))
+won_text_rect = won_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1]))
+lost_text_rect = lost_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1]))
+build_text_rect = build_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1] * 2 / 3))
+play_text_rect = play_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1] * 4 / 3))
+
 f = open("cubes.txt", "r")
 cube_strings = f.readlines()
 for i in cube_strings:
@@ -190,16 +199,34 @@ for i in cube_strings:
 for i in cubes:
     add_cube(i)
 
-game_loop = True
+main_menu = True
+game_loop = False
 won = False
 
+timestamp = 0
+
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            sys.exit()
+    while main_menu:
+        total_screen.fill([0, 0, 0])
+        total_screen.blit(build_text, build_text_rect)
+        total_screen.blit(play_text, play_text_rect)
+        pos = pygame.mouse.get_pos()
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_text_rect.collidepoint(pos):
+                    main_menu = False
+                    game_loop = True
     while game_loop:
-        if (not alive(coords)) or (not playing(coords)):
-            break
+        won = False
+        timestamp = 0
+        if not alive(coords):
+            game_loop = False
+        if not playing(coords):
+            game_loop = False
+            won = True
         total_screen.fill([0, 0, 0])
         top_screen.fill([0, 0, 0])
         mid_screen.fill([0, 0, 0])
@@ -244,3 +271,19 @@ while True:
             if event.type == pygame.QUIT:
                 sys.exit()
         pygame.display.flip()
+    if timestamp == 0:
+        timestamp = pygame.time.get_ticks()
+    if pygame.time.get_ticks() - timestamp > 2000:
+        main_menu = True
+        game_loop = False
+        coords = [1, -5, 1]
+        theta = math.pi / 2
+    else:
+        if won:
+            total_screen.blit(won_text, won_text_rect)
+        else:
+            total_screen.blit(lost_text, lost_text_rect)
+    pygame.display.flip()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
