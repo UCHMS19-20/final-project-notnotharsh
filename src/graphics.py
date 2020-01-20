@@ -350,6 +350,26 @@ while True:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 actual = (pos[0] - side_size[0], pos[1] - mid_size[1])
+                if pickaxe_rect.collidepoint(actual):
+                    print("ayy")
+                    if not free(coords):
+                        cubes.remove([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))])
+                    if not alive(coords):
+                        cubes.remove([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 127, 0, 0])
+                    if not playing(coords):
+                        cubes.remove([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0])
+                elif green_cube_rect.collidepoint(actual):
+                    if (free(coords) and alive(coords)) and playing(coords):
+                        if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0] not in cubes:
+                            cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0])
+                elif red_cube_rect.collidepoint(actual):
+                    if (free(coords) and alive(coords)) and playing(coords):
+                        if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 127, 0, 0] not in cubes:
+                            cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 127, 0, 0])
+                elif normal_cube_rect.collidepoint(actual):
+                    if (free(coords) and alive(coords)) and playing(coords):
+                        if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))] not in cubes:
+                            cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))])
         pygame.display.flip()
     if timestamp == 0:
         timestamp = pygame.time.get_ticks()
