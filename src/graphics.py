@@ -156,6 +156,11 @@ def playing(pos):
     local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2)), 0, 127, 0]
     return local_cube not in cubes
 
+def outside(pos):
+    global cubes
+    local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2)), 0, 0, 127]
+    return local_cube not in cubes
+
 side_size = (450, 450)
 mid_size = (720, 720)
 items_size = (mid_size[0], side_size[1] * 2 - mid_size[1])
@@ -217,12 +222,14 @@ main_menu = True
 build_loop = False
 game_loop = False
 won = False
+saving = False
 
-timestamp = 0
 buildstamp = 0
 
 while True:
     while main_menu:
+        coords = [1, -5, 1]
+        theta = math.pi / 2
         total_screen.fill([0, 0, 0])
         total_screen.blit(build_text, build_text_rect)
         total_screen.blit(play_text, play_text_rect)
@@ -240,7 +247,6 @@ while True:
         pygame.display.flip()
     while game_loop:
         won = False
-        timestamp = 0
         if not alive(coords):
             game_loop = False
         if not playing(coords):
@@ -284,6 +290,9 @@ while True:
             theta += rot_speed
         if keystate[pygame.K_RIGHT]:
             theta -= rot_speed
+        if keystate[pygame.K_SPACE]:
+            game_loop = False
+            main_menu = True
         top_screen.blit(top_text, (10, 10))
         bottom_screen.blit(bottom_text, (10, 10))
         mid_screen.blit(front_text, (10, 10))
@@ -296,7 +305,7 @@ while True:
                 sys.exit()
         pygame.display.flip()
     while build_loop:
-        if buildstamp % 100 == 0:
+        if buildstamp % 10 == 0:
             del surfaces[:]
             for i in cubes:
                 add_cube(i)
@@ -333,6 +342,20 @@ while True:
             theta += rot_speed
         if keystate[pygame.K_RIGHT]:
             theta -= rot_speed
+        if keystate[pygame.K_SPACE]:
+            build_loop = False
+            main_menu = True
+            if not saving:
+                saving = True
+                w = open("cubes.txt", "w")
+                cubestr = ""
+                for i in cubes:
+                    if len(i) == 3:
+                        cubestr += str(i[0]) + " " + str(i[1]) + " " + str(i[2]) + "\n"
+                    else:
+                        cubestr += str(i[0]) + " " + str(i[1]) + " " + str(i[2]) + " " + str(i[3]) + " " + str(i[4]) + " " + str(i[5]) + "\n"
+                w.write(cubestr)
+                w.close()
         top_screen.blit(top_text, (10, 10))
         bottom_screen.blit(bottom_text, (10, 10))
         mid_screen.blit(front_text, (10, 10))
@@ -351,7 +374,6 @@ while True:
                 pos = pygame.mouse.get_pos()
                 actual = (pos[0] - side_size[0], pos[1] - mid_size[1])
                 if pickaxe_rect.collidepoint(actual):
-                    print("ayy")
                     if not free(coords):
                         cubes.remove([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))])
                     if not alive(coords):
@@ -359,25 +381,21 @@ while True:
                     if not playing(coords):
                         cubes.remove([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0])
                 elif green_cube_rect.collidepoint(actual):
-                    if (free(coords) and alive(coords)) and playing(coords):
+                    if (free(coords) and alive(coords)) and (playing(coords) and outside(coords)):
                         if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0] not in cubes:
                             cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 0, 127, 0])
-                elif red_cube_rect.collidepoint(actual):
+                elif red_cube_rect.collidepoint(actual) and (playing(coords) and outside(coords)):
                     if (free(coords) and alive(coords)) and playing(coords):
                         if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 127, 0, 0] not in cubes:
                             cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2)), 127, 0, 0])
-                elif normal_cube_rect.collidepoint(actual):
+                elif normal_cube_rect.collidepoint(actual) and (playing(coords) and outside(coords)):
                     if (free(coords) and alive(coords)) and playing(coords):
                         if [int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))] not in cubes:
                             cubes.append([int(2 * math.floor(coords[0] / 2)), int(2 * math.floor(coords[1] / 2)), int(2 * math.floor(coords[2] / 2))])
         pygame.display.flip()
-    if timestamp == 0:
-        timestamp = pygame.time.get_ticks()
-    if pygame.time.get_ticks() - timestamp > 2000:
+    if pygame.key.get_pressed()[pygame.K_SPACE]:
         main_menu = True
         game_loop = False
-        coords = [1, -5, 1]
-        theta = math.pi / 2
     else:
         if won:
             total_screen.blit(won_text, won_text_rect)
