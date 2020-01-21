@@ -161,8 +161,8 @@ def outside(pos):
     local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2)), 0, 0, 127]
     return local_cube not in cubes
 
-side_size = (450, 450)
-mid_size = (720, 720)
+side_size = (300, 300)
+mid_size = (480, 480)
 items_size = (mid_size[0], side_size[1] * 2 - mid_size[1])
 
 coords = [1, -5, 1]
@@ -260,7 +260,7 @@ while True:
         surfaces.sort(key = lambda surface: get_dist_squared(surface, coords), reverse = True)
         for i in surfaces:
             if i[4] == [-1, -1, -1]:
-                draw_surface(i, False, False, return_color(get_dist_squared(i, coords), get_dist_squared(i, [0, -12, 0])), 0)
+                draw_surface(i, False, False, return_color(get_dist_squared(i, coords), get_dist_squared(i, [10, 10, 10])), 0)
             else:
                 draw_surface(i, False, False, i[4], 2)
         keystate = pygame.key.get_pressed()
