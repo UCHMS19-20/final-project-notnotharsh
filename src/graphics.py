@@ -85,61 +85,75 @@ def draw_surface(plist, draw_points, draw_lines, color, transparent):
         pygame.gfxdraw.filled_polygon(bottom_screen, [(int(coords_set_1[2][0]), int(coords_set_1[2][1])), (int(coords_set_2[2][0]), int(coords_set_2[2][1])), (int(coords_set_3[2][0]), int(coords_set_3[2][1])), (int(coords_set_4[2][0]), int(coords_set_4[2][1]))], color_obj)
 
 def add_cube(corner):
-    global surfaces
+    global surfaces, high_quality
     transparent = [-1, -1, -1]
     if len(corner) != 3:
         transparent = [corner[3], corner[4], corner[5]]
     x = corner[0]
     y = corner[1]
     z = corner[2]
-    if [[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z], transparent] not in surfaces:
-        surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z], transparent])
-    if [[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z], transparent] not in surfaces:
-        surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z], transparent])
-    if [[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z], transparent] not in surfaces:
-        surfaces.append([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z], transparent])
-    if [[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z], transparent] not in surfaces:
-        surfaces.append([[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z], transparent])
-    if [[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2], transparent] not in surfaces:
-        surfaces.append([[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2], transparent])
-    if [[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2], transparent] not in surfaces:
-        surfaces.append([[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2], transparent])
-    if [[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
-        surfaces.append([[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent])
-    if [[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent] not in surfaces:
-        surfaces.append([[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent])
-    if [[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1], transparent] not in surfaces:
-        surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1], transparent])
-    if [[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1], transparent] not in surfaces:
-        surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1], transparent])
-    if [[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2], transparent] not in surfaces:
-        surfaces.append([[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2], transparent])
-    if [[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2], transparent] not in surfaces:
-        surfaces.append([[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2], transparent])
-    if [[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1], transparent] not in surfaces:
-        surfaces.append([[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1], transparent])
-    if [[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1], transparent] not in surfaces:
-        surfaces.append([[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1], transparent])
-    if [[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
-        surfaces.append([[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent])
-    if [[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent] not in surfaces:
-        surfaces.append([[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent])
-    if [[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z], transparent] not in surfaces:
-        surfaces.append([[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z], transparent])
-    if [[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1], transparent] not in surfaces:
-        surfaces.append([[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1], transparent])
-    if [[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z], transparent] not in surfaces:
-        surfaces.append([[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z], transparent])
-    if [[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1], transparent] not in surfaces:
-        surfaces.append([[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1], transparent])
-    if [[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z], transparent] not in surfaces:
-        surfaces.append([[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z], transparent])
-    if [[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1], transparent] not in surfaces:
-        surfaces.append([[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1], transparent])
-    if [[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z], transparent] not in surfaces:
-        surfaces.append([[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z], transparent])
-    if [[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1], transparent] not in surfaces:
-        surfaces.append([[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1], transparent])
+    if high_quality:
+        if [[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y + 1, z], [x, y + 1, z], transparent])
+        if [[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z], transparent] not in surfaces:
+            surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y + 1, z], [x + 1, y + 1, z], transparent])
+        if [[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x, y + 1, z], [x + 1, y + 1, z], [x + 1, y + 2, z], [x, y + 2, z], transparent])
+        if [[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x + 1, y + 1, z], [x + 2, y + 1, z], [x + 2, y + 2, z], [x + 1, y + 2, z], transparent])
+        if [[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y, z + 2], [x + 1, y, z + 2], [x + 1, y + 1, z + 2], [x, y + 1, z + 2], transparent])
+        if [[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2], transparent] not in surfaces:
+            surfaces.append([[x + 1, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 1, y + 1, z + 2], transparent])
+        if [[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y + 1, z + 2], [x + 1, y + 1, z + 2], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent])
+        if [[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x + 1, y + 1, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent])
+        if [[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x + 1, y, z], [x + 1, y, z + 1], [x, y, z + 1], transparent])
+        if [[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1], transparent] not in surfaces:
+            surfaces.append([[x + 1, y, z], [x + 2, y, z], [x + 2, y, z + 1], [x + 1, y, z + 1], transparent])
+        if [[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y, z + 2], [x, y, z + 2], transparent])
+        if [[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2], transparent] not in surfaces:
+            surfaces.append([[x + 1, y, z + 1], [x + 2, y, z + 1], [x + 2, y, z + 2], [x + 1, y, z + 2], transparent])
+        if [[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1], transparent] not in surfaces:
+            surfaces.append([[x, y + 2, z], [x + 1, y + 2, z], [x + 1, y + 2, z + 1], [x, y + 2, z + 1], transparent])
+        if [[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1], transparent] not in surfaces:
+            surfaces.append([[x + 1, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 1], [x + 1, y + 2, z + 1], transparent])
+        if [[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y + 2, z + 1], [x + 1, y + 2, z + 1], [x + 1, y + 2, z + 2], [x, y + 2, z + 2], transparent])
+        if [[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x + 1, y + 2, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z + 2], [x + 1, y + 2, z + 2], transparent])
+        if [[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x, y, z + 1], [x, y + 1, z + 1], [x, y + 1, z], transparent])
+        if [[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1], transparent] not in surfaces:
+            surfaces.append([[x, y, z + 1], [x, y, z + 2], [x, y + 1, z + 2], [x, y + 1, z + 1], transparent])
+        if [[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x, y + 1, z], [x, y + 1, z + 1], [x, y + 2, z + 1], [x, y + 2, z], transparent])
+        if [[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1], transparent] not in surfaces:
+            surfaces.append([[x, y + 1, z + 1], [x, y + 1, z + 2], [x, y + 2, z + 2], [x, y + 2, z + 1], transparent])
+        if [[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z], transparent] not in surfaces:
+            surfaces.append([[x + 2, y, z], [x + 2, y, z + 1], [x + 2, y + 1, z + 1], [x + 2, y + 1, z], transparent])
+        if [[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1], transparent] not in surfaces:
+            surfaces.append([[x + 2, y, z + 1], [x + 2, y, z + 2], [x + 2, y + 1, z + 2], [x + 2, y + 1, z + 1], transparent])
+        if [[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x + 2, y + 1, z], [x + 2, y + 1, z + 1], [x + 2, y + 2, z + 1], [x + 2, y + 2, z], transparent])
+        if [[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1], transparent] not in surfaces:
+            surfaces.append([[x + 2, y + 1, z + 1], [x + 2, y + 1, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z + 1], transparent])
+    else:
+        if [[x, y, z], [x + 2, y, z], [x + 2, y + 2, z], [x, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y + 2, z], [x, y + 2, z], transparent])
+        if [[x, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y, z + 2], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x, y + 2, z + 2], transparent])
+        if [[x, y, z], [x + 2, y, z], [x + 2, y, z + 2], [x, y, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x + 2, y, z], [x + 2, y, z + 2], [x, y, z + 2], transparent])
+        if [[x, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x, y + 2, z + 2], transparent] not in surfaces:
+            surfaces.append([[x, y + 2, z], [x + 2, y + 2, z], [x + 2, y + 2, z + 2], [x, y + 2, z + 2], transparent])
+        if [[x, y, z], [x, y, z + 2], [x, y + 2, z + 2], [x, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x, y, z], [x, y, z + 2], [x, y + 2, z + 2], [x, y + 2, z], transparent])
+        if [[x + 2, y, z], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z], transparent] not in surfaces:
+            surfaces.append([[x + 2, y, z], [x + 2, y, z + 2], [x + 2, y + 2, z + 2], [x + 2, y + 2, z], transparent])
 
 def free(pos):
     global cubes
@@ -188,13 +202,17 @@ bottom_text = little_font.render("bottom", True, (127, 127, 127))
 front_text = little_font.render("forward", True, (127, 127, 127))
 won_text = font.render("you won!", True, (255, 255, 255))
 lost_text = font.render("you lost!", True, (255, 255, 255))
-build_text = font.render("Build", True, (255, 255, 255))
-play_text = font.render("Play", True, (255, 255, 255))
+build_text = font.render("build", True, (255, 255, 255))
+play_text = font.render("play", True, (255, 255, 255))
+high_text = font.render("quality: high", True, (255, 255, 255))
+low_text = font.render("quality: low", True, (255, 255, 255))
 
 won_text_rect = won_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1]))
 lost_text_rect = lost_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1]))
-build_text_rect = build_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1] * 2 / 3))
-play_text_rect = play_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1] * 4 / 3))
+build_text_rect = build_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1] / 2))
+play_text_rect = play_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, side_size[1]))
+high_text_rect = high_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, 3 * side_size[1] / 2))
+low_text_rect = low_text.get_rect(center = ((side_size[0] + mid_size[0]) / 2, 3 * side_size[1] / 2))
 
 pickaxe = pygame.transform.scale(pygame.image.load("img/pickaxe.png"), (items_size[1], items_size[1]))
 normal_cube = pygame.transform.scale(pygame.image.load("img/normalcube.png"), (items_size[1], items_size[1]))
@@ -205,6 +223,8 @@ pickaxe_rect = pickaxe.get_rect(topleft = (0, 0))
 normal_cube_rect = normal_cube.get_rect(topleft = (items_size[1], 0))
 green_cube_rect = green_cube.get_rect(topleft = (2 * items_size[1], 0))
 red_cube_rect = red_cube.get_rect(topleft = (3 * items_size[1], 0))
+
+high_quality = True
 
 f = open("cubes.txt", "r")
 cube_strings = f.readlines()
@@ -233,6 +253,10 @@ while True:
         total_screen.fill([0, 0, 0])
         total_screen.blit(build_text, build_text_rect)
         total_screen.blit(play_text, play_text_rect)
+        if high_quality:
+            total_screen.blit(high_text, high_text_rect)
+        else:
+            total_screen.blit(low_text, low_text_rect)
         pos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -244,6 +268,10 @@ while True:
                 elif build_text_rect.collidepoint(pos):
                     main_menu = False
                     build_loop = True
+                elif high_text_rect.collidepoint(pos) and high_quality:
+                    high_quality = False
+                elif low_text_rect.collidepoint(pos) and not high_quality:
+                    high_quality = True
         pygame.display.flip()
     while game_loop:
         won = False
