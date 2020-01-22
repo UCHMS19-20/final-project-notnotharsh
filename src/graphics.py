@@ -175,8 +175,10 @@ def outside(pos):
     local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2)), 0, 0, 127]
     return local_cube not in cubes
 
-side_size = (300, 300)
-mid_size = (480, 480)
+size_coefficient = 120
+
+side_size = (5 * size_coefficient, 5 * size_coefficient)
+mid_size = (8 * size_coefficient, 8 * size_coefficient)
 items_size = (mid_size[0], side_size[1] * 2 - mid_size[1])
 
 coords = [1, -5, 1]
@@ -274,6 +276,11 @@ while True:
                     high_quality = True
         pygame.display.flip()
     while game_loop:
+        if buildstamp % 10 == 0:
+            del surfaces[:]
+            for i in cubes:
+                add_cube(i)
+        buildstamp += 1
         won = False
         if not alive(coords):
             game_loop = False
