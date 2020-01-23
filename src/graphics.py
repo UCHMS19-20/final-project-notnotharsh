@@ -175,7 +175,7 @@ def outside(pos):
     local_cube = [int(2 * math.floor(pos[0] / 2)), int(2 * math.floor(pos[1] / 2)), int(2 * math.floor(pos[2] / 2)), 0, 0, 127]
     return local_cube not in cubes
 
-size_coefficient = 120
+size_coefficient = 50
 
 side_size = (5 * size_coefficient, 5 * size_coefficient)
 mid_size = (8 * size_coefficient, 8 * size_coefficient)
