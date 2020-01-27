@@ -35,7 +35,7 @@ Click [here](WorksCited.md) to go to the Works Cited.
 
 ## Flowchart
 
-![Flowchart](maze_minecraft_flowchart.pdf)
+The flowchart is [here](maze_minecraft_flowchart.pdf).
 
 ## Presentation
 
