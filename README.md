@@ -5,8 +5,8 @@
 This game is a 3D game in which players can build and play mazes. It is roughly based on Minecraft, and the only blocks players can use to build mazes are sandstone-colored regular blocks, green-colored victory zones, and red-colored death zones. In every maze, there is a blue-colored start zone whose position cannot be altered. When playing the maze, players must get to the victory zone while avoiding the death zone.
 
 ![Main Menu Screenshot](main_menu.png)
-![Build Interface Screenshot](main_menu.png)
-![Playing Interface Screenshot](main_menu.png)
+![Build Interface Screenshot](build.png)
+![Playing Interface Screenshot](play.png)
 
 ## Objective
 
@@ -35,7 +35,7 @@ Click [here](WorksCited.md) to go to the Works Cited.
 
 ## Flowchart
 
-![Flowchart](maze_minecraft_flowchart.png)
+![Flowchart](maze_minecraft_flowchart.pdf)
 
 ## Presentation
 
