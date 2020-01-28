@@ -4,9 +4,9 @@
 
 This game is a 3D game in which players can build and play mazes. It is roughly based on Minecraft, and the only blocks players can use to build mazes are sandstone-colored regular blocks, green-colored victory zones, and red-colored death zones. In every maze, there is a blue-colored start zone whose position cannot be altered. When playing the maze, players must get to the victory zone while avoiding the death zone.
 
-![Main Menu Screenshot](main_menu.png)
-![Build Interface Screenshot](build.png)
-![Playing Interface Screenshot](play.png)
+![Main Menu Screenshot](info/main_menu.png)
+![Build Interface Screenshot](info/build.png)
+![Playing Interface Screenshot](info/play.png)
 
 ## Objective
 
@@ -14,14 +14,14 @@ In Build, navigate however you want, pressing keys to move and buttons to mine a
 
 ## Controls
 
-### Player 1
-
 | Action                            | Button                                  |
 | --------------------------------- | --------------------------------------- |
 | Move Forward                      | `Z`                                     |
 | Move Backward                     | `X`                                     |
 | Move Up                           | `W`                                     |
 | Move Down                         | `S`                                     |
+| Move Left                         | `A`                                     |
+| Move Right                        | `D`                                     |
 | Turn Clockwise                    | `Right`                                 |
 | Turn Counterclockwise             | `Left`                                  |
 | Access Main Menu                  | `Space`                                 |
@@ -31,11 +31,11 @@ In Build, navigate however you want, pressing keys to move and buttons to mine a
 
 ## Works Cited
 
-Click [here](WorksCited.md) to go to the Works Cited.
+Click [here](info/WorksCited.md) to go to the Works Cited.
 
 ## Flowchart
 
-The flowchart is [here](maze_minecraft_flowchart.pdf).
+The flowchart is [here](info/maze_minecraft_flowchart.pdf).
 
 ## Presentation
 
